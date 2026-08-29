@@ -48,7 +48,7 @@
                 {{-- ACCUEIL --}}
 
                 <a
-                    href="/dashboard"
+                    href="{{ route('dashboard') }}"
                     class="flex items-center gap-3 rounded-xl bg-cyan-600/20 px-4 py-3 text-sm font-semibold text-cyan-400 transition hover:bg-cyan-600/30"
                 >
                     <span class="text-lg">🏠</span>
@@ -59,7 +59,7 @@
                 {{-- CLIENTS / FOURNISSEURS --}}
 
                 <a
-                    href="/clients-fournisseurs"
+                    href="{{ route('clients-fournisseurs') }}"
                     class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
                 >
                     <span class="text-lg">👥</span>
@@ -70,7 +70,7 @@
                 {{-- STOCK --}}
 
                 <a
-                    href="/stock"
+                    href="{{ route('stock') }}"
                     class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
                 >
                     <span class="text-lg">📦</span>
@@ -81,7 +81,7 @@
                 {{-- FACTURES --}}
 
                 <a
-                    href="/factures"
+                    href="{{ route('factures') }}"
                     class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
                 >
                     <span class="text-lg">🧾</span>
@@ -92,7 +92,7 @@
                 {{-- ALERTES --}}
 
                 <a
-                    href="/alertes"
+                    href="{{ route('alertes') }}"
                     class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
                 >
 
@@ -106,7 +106,32 @@
                     </span>
 
                 </a>
+                
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
 
+                    <button
+                        type="submit"
+                        class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-red-600 transition hover:bg-red-50"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="h-5 w-5"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 12h9m0 0-3-3m3 3-3 3"
+                            />
+                        </svg>
+
+                        <span>Déconnexion</span>
+                    </button>
+                </form>
             </nav>
 
 
