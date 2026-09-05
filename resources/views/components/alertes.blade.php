@@ -1,56 +1,60 @@
 <x-layouts.dashboard>
 
-    <div class="p-8">
+    <div class="space-y-8">
 
-        <div class="mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">
+        <div>
+            <p class="text-sm font-medium text-[var(--forest-accent)]">
+                Gestion des alertes
+            </p>
+
+            <h1 class="mt-1 text-3xl font-black text-[var(--forest-text)]">
                 Alertes stock
             </h1>
 
-            <p class="mt-1 text-gray-500">
+            <p class="mt-2 text-sm text-[var(--forest-muted)]">
                 Produits dont le stock est faible ou épuisé.
             </p>
         </div>
 
         @if($products->isEmpty())
 
-            <div class="rounded-xl border border-green-200 bg-green-50 p-5">
-                <h2 class="font-semibold text-green-700">
+            <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-5">
+                <h2 class="font-semibold text-emerald-700">
                     ✓ Aucun produit en alerte
                 </h2>
 
-                <p class="mt-1 text-sm text-green-600">
+                <p class="mt-1 text-sm text-emerald-600">
                     Tous les produits ont un stock suffisant.
                 </p>
             </div>
 
         @else
 
-            <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+            <div class="forest-card overflow-hidden rounded-xl border shadow-sm">
 
                 <table class="w-full text-left">
 
-                    <thead class="border-b bg-gray-50">
+                    <thead class="border-b bg-[var(--forest-panel)]">
                         <tr>
-                            <th class="px-6 py-4">Produit</th>
-                            <th class="px-6 py-4">Référence</th>
-                            <th class="px-6 py-4">Stock actuel</th>
-                            <th class="px-6 py-4">Seuil minimum</th>
-                            <th class="px-6 py-4">État</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">Produit</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">Référence</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">Stock actuel</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">Seuil minimum</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">État</th>
                         </tr>
                     </thead>
 
-                    <tbody class="divide-y">
+                    <tbody class="divide-y divide-[var(--forest-border)]">
 
                         @foreach($products as $product)
 
-                            <tr class="hover:bg-gray-50">
+                            <tr class="hover:bg-[var(--forest-panel)]">
 
-                                <td class="px-6 py-4 font-medium text-gray-900">
+                                <td class="px-6 py-4 font-medium text-[var(--forest-text)]">
                                     {{ $product->name }}
                                 </td>
 
-                                <td class="px-6 py-4 text-gray-600">
+                                <td class="px-6 py-4 text-[var(--forest-muted)]">
                                     {{ $product->reference }}
                                 </td>
 
@@ -61,7 +65,7 @@
                                     {{ $product->current_stock }}
                                 </td>
 
-                                <td class="px-6 py-4 text-gray-600">
+                                <td class="px-6 py-4 text-[var(--forest-muted)]">
                                     {{ $product->minimum_stock }}
                                 </td>
 

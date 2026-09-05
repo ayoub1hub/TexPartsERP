@@ -4,15 +4,15 @@
 
         {{-- HEADER --}}
         <div>
-            <p class="text-sm font-medium text-cyan-600">
+            <p class="text-sm font-medium text-[var(--forest-accent)]">
                 Gestion
             </p>
 
-            <h1 class="mt-1 text-3xl font-black text-slate-900">
+            <h1 class="mt-1 text-3xl font-black text-[var(--forest-text)]">
                 Clients & Fournisseurs
             </h1>
 
-            <p class="mt-2 text-sm text-slate-500">
+            <p class="mt-2 text-sm text-[var(--forest-muted)]">
                 Consultez vos clients, fournisseurs et leurs historiques.
             </p>
         </div>
@@ -27,23 +27,23 @@
 
             {{-- ======================= CLIENTS ======================= --}}
 
-            <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="forest-card overflow-hidden rounded-2xl border shadow-sm">
 
-                <div class="border-b border-slate-200 p-6">
+                <div class="border-b border-[var(--forest-border)] p-6">
 
                     <div class="flex items-center gap-3">
 
-                        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-50 text-xl">
+                        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--forest-accent-soft)] text-xl">
                             👥
                         </div>
 
                         <div>
 
-                            <h2 class="text-lg font-bold text-slate-900">
+                            <h2 class="text-lg font-bold text-[var(--forest-text)]">
                                 Clients
                             </h2>
 
-                            <p class="text-xs text-slate-400">
+                            <p class="text-xs text-[var(--forest-muted)]">
                                 {{ $clients->count() }}
                                 {{ $clients->count() > 1 ? 'clients' : 'client' }}
                             </p>
@@ -68,12 +68,12 @@
                                 name="client_search"
                                 value="{{ $clientSearch }}"
                                 placeholder="Rechercher un client..."
-                                class="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-cyan-400 focus:bg-white focus:ring-2 focus:ring-cyan-100"
+                                class="flex-1 rounded-xl border border-[var(--forest-border)] bg-[var(--forest-panel)] px-4 py-3 text-sm text-[var(--forest-text)] outline-none transition focus:border-[var(--forest-accent)] focus:bg-white focus:ring-2 focus:ring-[var(--forest-accent-soft)]"
                             >
 
                             <button
                                 type="submit"
-                                class="rounded-xl bg-cyan-600 px-4 py-3 text-xs font-semibold text-white transition hover:bg-cyan-700"
+                                class="rounded-xl bg-[var(--forest-accent)] px-4 py-3 text-xs font-semibold text-white transition hover:bg-green-700"
                             >
                                 Rechercher
                             </button>
@@ -95,26 +95,26 @@
                             href="{{ route('clients-fournisseurs', [
                                 'client_id' => $client->id
                             ]) }}"
-                            class="block p-5 transition hover:bg-cyan-50/50"
+                            class="block p-5 transition hover:bg-[var(--forest-accent-soft)]"
                         >
 
                             <div class="flex items-start justify-between gap-4">
 
                                 <div class="flex items-center gap-3">
 
-                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cyan-50 font-bold text-cyan-600">
+                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--forest-accent-soft)] font-bold text-[var(--forest-accent)]">
                                         {{ strtoupper(substr($client->name, 0, 1)) }}
                                     </div>
 
                                     <div>
 
-                                        <p class="text-sm font-bold text-slate-800">
+                                        <p class="text-sm font-bold text-[var(--forest-text)]">
                                             {{ $client->name }}
                                         </p>
 
                                         @if ($client->email)
 
-                                            <p class="mt-1 text-xs text-slate-400">
+                                            <p class="mt-1 text-xs text-[var(--forest-muted)]">
                                                 {{ $client->email }}
                                             </p>
 
@@ -125,7 +125,7 @@
                                 </div>
 
 
-                                <span class="rounded-lg bg-slate-100 px-2 py-1 text-[10px] font-semibold text-slate-500">
+                                <span class="rounded-lg bg-[var(--forest-panel)] px-2 py-1 text-[10px] font-semibold text-[var(--forest-muted)]">
                                     #{{ $client->id }}
                                 </span>
 
@@ -159,15 +159,15 @@
 
                         <div class="p-8 text-center">
 
-                            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-50">
+                            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--forest-panel)]">
                                 👤
                             </div>
 
-                            <p class="mt-3 text-sm font-semibold text-slate-600">
+                            <p class="mt-3 text-sm font-semibold text-[var(--forest-muted)]">
                                 Aucun client trouvé
                             </p>
 
-                            <p class="mt-1 text-xs text-slate-400">
+                            <p class="mt-1 text-xs text-[var(--forest-muted)]">
                                 Aucun client ne correspond à votre recherche.
                             </p>
 
@@ -183,23 +183,23 @@
 
             {{-- ==================== FOURNISSEURS ==================== --}}
 
-            <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="forest-card overflow-hidden rounded-2xl border shadow-sm">
 
-                <div class="border-b border-slate-200 p-6">
+                <div class="border-b border-[var(--forest-border)] p-6">
 
                     <div class="flex items-center gap-3">
 
-                        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 text-xl">
+                        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--forest-accent-soft)] text-xl">
                             🏢
                         </div>
 
                         <div>
 
-                            <h2 class="text-lg font-bold text-slate-900">
+                            <h2 class="text-lg font-bold text-[var(--forest-text)]">
                                 Fournisseurs
                             </h2>
 
-                            <p class="text-xs text-slate-400">
+                            <p class="text-xs text-[var(--forest-muted)]">
                                 {{ $suppliers->count() }}
                                 {{ $suppliers->count() > 1 ? 'fournisseurs' : 'fournisseur' }}
                             </p>
@@ -224,12 +224,12 @@
                                 name="supplier_search"
                                 value="{{ $supplierSearch }}"
                                 placeholder="Rechercher un fournisseur..."
-                                class="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-violet-400 focus:bg-white focus:ring-2 focus:ring-violet-100"
+                                class="flex-1 rounded-xl border border-[var(--forest-border)] bg-[var(--forest-panel)] px-4 py-3 text-sm text-[var(--forest-text)] outline-none transition focus:border-[var(--forest-accent)] focus:bg-white focus:ring-2 focus:ring-[var(--forest-accent-soft)]"
                             >
 
                             <button
                                 type="submit"
-                                class="rounded-xl bg-violet-600 px-4 py-3 text-xs font-semibold text-white transition hover:bg-violet-700"
+                                class="rounded-xl bg-[var(--forest-accent)] px-4 py-3 text-xs font-semibold text-white transition hover:bg-green-700"
                             >
                                 Rechercher
                             </button>
@@ -243,7 +243,7 @@
 
                 {{-- LISTE FOURNISSEURS --}}
 
-                <div class="divide-y divide-slate-100">
+                <div class="divide-y divide-[var(--forest-border)]">
 
                     @forelse ($suppliers as $supplier)
 
@@ -251,26 +251,26 @@
                             href="{{ route('clients-fournisseurs', [
                                 'supplier_id' => $supplier->id
                             ]) }}"
-                            class="block p-5 transition hover:bg-violet-50/50"
+                            class="block p-5 transition hover:bg-[var(--forest-accent-soft)]"
                         >
 
                             <div class="flex items-start justify-between gap-4">
 
                                 <div class="flex items-center gap-3">
 
-                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet-50 font-bold text-violet-600">
+                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--forest-accent-soft)] font-bold text-[var(--forest-accent)]">
                                         {{ strtoupper(substr($supplier->name, 0, 1)) }}
                                     </div>
 
                                     <div>
 
-                                        <p class="text-sm font-bold text-slate-800">
+                                        <p class="text-sm font-bold text-[var(--forest-text)]">
                                             {{ $supplier->name }}
                                         </p>
 
                                         @if ($supplier->email)
 
-                                            <p class="mt-1 text-xs text-slate-400">
+                                            <p class="mt-1 text-xs text-[var(--forest-muted)]">
                                                 {{ $supplier->email }}
                                             </p>
 
@@ -281,14 +281,14 @@
                                 </div>
 
 
-                                <span class="rounded-lg bg-slate-100 px-2 py-1 text-[10px] font-semibold text-slate-500">
+                                <span class="rounded-lg bg-[var(--forest-panel)] px-2 py-1 text-[10px] font-semibold text-[var(--forest-muted)]">
                                     #{{ $supplier->id }}
                                 </span>
 
                             </div>
 
 
-                            <div class="mt-4 grid gap-2 text-xs text-slate-500 sm:grid-cols-2">
+                            <div class="mt-4 grid gap-2 text-xs text-[var(--forest-muted)] sm:grid-cols-2">
 
                                 @if ($supplier->phone)
 
@@ -315,15 +315,15 @@
 
                         <div class="p-8 text-center">
 
-                            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-50">
+                            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--forest-panel)]">
                                 🏢
                             </div>
 
-                            <p class="mt-3 text-sm font-semibold text-slate-600">
+                            <p class="mt-3 text-sm font-semibold text-[var(--forest-muted)]">
                                 Aucun fournisseur trouvé
                             </p>
 
-                            <p class="mt-1 text-xs text-slate-400">
+                            <p class="mt-1 text-xs text-[var(--forest-muted)]">
                                 Aucun fournisseur ne correspond à votre recherche.
                             </p>
 
@@ -345,23 +345,23 @@
 
         @if ($selectedClient)
 
-            <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="forest-card overflow-hidden rounded-2xl border shadow-sm">
 
-                <div class="border-b border-slate-200 bg-cyan-50/50 p-6">
+                <div class="border-b border-[var(--forest-border)] bg-[var(--forest-accent-soft)] p-6">
 
                     <div class="flex items-center justify-between">
 
                         <div>
 
-                            <p class="text-xs font-semibold uppercase tracking-wider text-cyan-600">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-[var(--forest-accent)]">
                                 Historique client
                             </p>
 
-                            <h2 class="mt-1 text-xl font-bold text-slate-900">
+                            <h2 class="mt-1 text-xl font-bold text-[var(--forest-text)]">
                                 {{ $selectedClient->name }}
                             </h2>
 
-                            <p class="mt-1 text-xs text-slate-500">
+                            <p class="mt-1 text-xs text-[var(--forest-muted)]">
                                 Historique des factures associées à ce client.
                             </p>
 
@@ -370,7 +370,7 @@
 
                         <a
                             href="{{ route('clients-fournisseurs') }}"
-                            class="rounded-lg bg-white px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm ring-1 ring-slate-200 transition hover:bg-slate-50"
+                            class="rounded-lg bg-[var(--forest-surface)] px-3 py-2 text-xs font-semibold text-[var(--forest-muted)] shadow-sm ring-1 ring-[var(--forest-border)] transition hover:bg-[var(--forest-panel)]"
                         >
                             Fermer
                         </a>
@@ -386,23 +386,23 @@
 
                         <table class="w-full text-left text-sm">
 
-                            <thead class="border-b border-slate-200 bg-slate-50">
+                            <thead class="border-b border-[var(--forest-border)] bg-[var(--forest-panel)]">
 
                                 <tr>
 
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                                    <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                         N° Facture
                                     </th>
 
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                                    <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                         Date
                                     </th>
 
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                                    <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                         Montant
                                     </th>
 
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                                    <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                         Statut
                                     </th>
 
@@ -411,27 +411,27 @@
                             </thead>
 
 
-                            <tbody class="divide-y divide-slate-100">
+                            <tbody class="divide-y divide-[var(--forest-border)]">
 
                                 @foreach ($clientInvoices as $invoice)
 
-                                    <tr class="transition hover:bg-slate-50">
+                                    <tr class="transition hover:bg-[var(--forest-panel)]">
 
-                                        <td class="px-6 py-4 font-semibold text-slate-800">
+                                        <td class="px-6 py-4 font-semibold text-[var(--forest-text)]">
                                             {{ $invoice->invoice_number }}
                                         </td>
 
-                                        <td class="px-6 py-4 text-slate-500">
+                                        <td class="px-6 py-4 text-[var(--forest-muted)]">
                                             {{ $invoice->invoice_date }}
                                         </td>
 
-                                        <td class="px-6 py-4 font-semibold text-slate-800">
+                                        <td class="px-6 py-4 font-semibold text-[var(--forest-text)]">
                                             {{ number_format($invoice->amount, 2, ',', ' ') }} DH
                                         </td>
 
                                         <td class="px-6 py-4">
 
-                                            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                                            <span class="rounded-full bg-[var(--forest-panel)] px-3 py-1 text-xs font-semibold text-[var(--forest-muted)]">
                                                 {{ $invoice->status }}
                                             </span>
 
@@ -451,15 +451,15 @@
 
                     <div class="p-10 text-center">
 
-                        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-50">
+                        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--forest-panel)]">
                             🧾
                         </div>
 
-                        <p class="mt-3 text-sm font-semibold text-slate-600">
+                        <p class="mt-3 text-sm font-semibold text-[var(--forest-muted)]">
                             Aucune facture
                         </p>
 
-                        <p class="mt-1 text-xs text-slate-400">
+                        <p class="mt-1 text-xs text-[var(--forest-muted)]">
                             Ce client n'a encore aucune facture enregistrée.
                         </p>
 
@@ -479,23 +479,23 @@
 
         @if ($selectedSupplier)
 
-            <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="forest-card overflow-hidden rounded-2xl border shadow-sm">
 
-                <div class="border-b border-slate-200 bg-violet-50/50 p-6">
+                <div class="border-b border-[var(--forest-border)] bg-[var(--forest-accent-soft)] p-6">
 
                     <div class="flex items-center justify-between">
 
                         <div>
 
-                            <p class="text-xs font-semibold uppercase tracking-wider text-violet-600">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-[var(--forest-accent)]">
                                 Historique fournisseur
                             </p>
 
-                            <h2 class="mt-1 text-xl font-bold text-slate-900">
+                            <h2 class="mt-1 text-xl font-bold text-[var(--forest-text)]">
                                 {{ $selectedSupplier->name }}
                             </h2>
 
-                            <p class="mt-1 text-xs text-slate-500">
+                            <p class="mt-1 text-xs text-[var(--forest-muted)]">
                                 Historique de nos achats auprès de ce fournisseur.
                             </p>
 
@@ -504,7 +504,7 @@
 
                         <a
                             href="{{ route('clients-fournisseurs') }}"
-                            class="rounded-lg bg-white px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm ring-1 ring-slate-200 transition hover:bg-slate-50"
+                            class="rounded-lg bg-[var(--forest-surface)] px-3 py-2 text-xs font-semibold text-[var(--forest-muted)] shadow-sm ring-1 ring-[var(--forest-border)] transition hover:bg-[var(--forest-panel)]"
                         >
                             Fermer
                         </a>
@@ -520,27 +520,27 @@
 
                         <table class="w-full text-left text-sm">
 
-                            <thead class="border-b border-slate-200 bg-slate-50">
+                            <thead class="border-b border-[var(--forest-border)] bg-[var(--forest-panel)]">
 
                                 <tr>
 
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                                    <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                         Référence
                                     </th>
 
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                                    <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                         Date
                                     </th>
 
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                                    <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                         Produit
                                     </th>
 
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                                    <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                         Quantité
                                     </th>
 
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                                    <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                         Prix d'achat
                                     </th>
 
@@ -549,29 +549,29 @@
                             </thead>
 
 
-                            <tbody class="divide-y divide-slate-100">
+                            <tbody class="divide-y divide-[var(--forest-border)]">
 
                                 @foreach ($supplierPurchases as $purchase)
 
-                                    <tr class="transition hover:bg-slate-50">
+                                    <tr class="transition hover:bg-[var(--forest-panel)]">
 
-                                        <td class="px-6 py-4 font-semibold text-slate-800">
+                                        <td class="px-6 py-4 font-semibold text-[var(--forest-text)]">
                                             {{ $purchase->reference }}
                                         </td>
 
-                                        <td class="px-6 py-4 text-slate-500">
+                                        <td class="px-6 py-4 text-[var(--forest-muted)]">
                                             {{ $purchase->entry_date }}
                                         </td>
 
                                         <td class="px-6 py-4">
 
-                                            <p class="font-semibold text-slate-800">
+                                            <p class="font-semibold text-[var(--forest-text)]">
                                                 {{ $purchase->product_name ?? 'Produit inconnu' }}
                                             </p>
 
                                             @if ($purchase->product_reference)
 
-                                                <p class="text-xs text-slate-400">
+                                                <p class="text-xs text-[var(--forest-muted)]">
                                                     Réf. {{ $purchase->product_reference }}
                                                 </p>
 
@@ -579,11 +579,11 @@
 
                                         </td>
 
-                                        <td class="px-6 py-4 font-semibold text-slate-800">
+                                        <td class="px-6 py-4 font-semibold text-[var(--forest-text)]">
                                             {{ $purchase->quantity }}
                                         </td>
 
-                                        <td class="px-6 py-4 font-semibold text-slate-800">
+                                        <td class="px-6 py-4 font-semibold text-[var(--forest-text)]">
                                             {{ number_format($purchase->purchase_price, 2, ',', ' ') }} DH
                                         </td>
 
@@ -601,15 +601,15 @@
 
                     <div class="p-10 text-center">
 
-                        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-50">
+                        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--forest-panel)]">
                             📦
                         </div>
 
-                        <p class="mt-3 text-sm font-semibold text-slate-600">
+                        <p class="mt-3 text-sm font-semibold text-[var(--forest-muted)]">
                             Aucun achat
                         </p>
 
-                        <p class="mt-1 text-xs text-slate-400">
+                        <p class="mt-1 text-xs text-[var(--forest-muted)]">
                             Aucun achat n'est enregistré pour ce fournisseur.
                         </p>
 
@@ -629,17 +629,17 @@
 
         @if (!$selectedClient && !$selectedSupplier)
 
-            <div class="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+            <div class="rounded-2xl border border-dashed border-[var(--forest-border)] bg-[var(--forest-surface)] p-10 text-center">
 
-                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-50 text-xl">
+                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[var(--forest-panel)] text-xl">
                     📋
                 </div>
 
-                <p class="mt-3 text-sm font-semibold text-slate-600">
+                <p class="mt-3 text-sm font-semibold text-[var(--forest-muted)]">
                     Sélectionnez un client ou un fournisseur
                 </p>
 
-                <p class="mt-1 text-xs text-slate-400">
+                <p class="mt-1 text-xs text-[var(--forest-muted)]">
                     Cliquez sur un élément dans les listes ci-dessus pour afficher son historique.
                 </p>
 

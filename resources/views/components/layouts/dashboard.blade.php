@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -18,7 +18,7 @@
 
         {{-- ================= SIDEBAR ================= --}}
 
-        <aside class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-slate-950 text-white shadow-2xl">
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex w-64 -translate-x-0 flex-col bg-slate-950 text-white shadow-2xl transition-transform duration-300 ease-in-out">
 
             {{-- LOGO --}}
 
@@ -102,7 +102,7 @@
                     </div>
 
                     <span class="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
-                        0
+                        {{ $stockAlerts ?? 0 }}
                     </span>
 
                 </a>
@@ -166,22 +166,48 @@
 
         {{-- ================= CONTENU PRINCIPAL ================= --}}
 
-        <div class="ml-64 flex min-h-screen flex-1 flex-col">
+        <div id="mainContent" class="ml-64 flex min-h-screen flex-1 flex-col transition-all duration-300 ease-in-out">
 
 
             {{-- NAVBAR --}}
 
             <header class="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-slate-200 bg-white/95 px-8 shadow-sm backdrop-blur">
 
-                <div>
+                <div class="flex items-center gap-4">
 
-                    <p class="text-xs font-medium uppercase tracking-wider text-slate-400">
-                        TEXPART ERP
-                    </p>
+                    {{-- TOGGLE SIDEBAR --}}
 
-                    <h2 class="text-xl font-bold text-slate-900">
-                        Accueil
-                    </h2>
+                    <button
+                        id="sidebarToggle"
+                        class="flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            class="h-6 w-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                            />
+                        </svg>
+                    </button>
+
+                    <div>
+
+                        <p class="text-xs font-medium uppercase tracking-wider text-slate-400">
+                            TEXPART ERP
+                        </p>
+
+                        <h2 class="text-xl font-bold text-slate-900">
+                            Accueil
+                        </h2>
+
+                    </div>
 
                 </div>
 
@@ -252,6 +278,31 @@
 
 
     @livewireScripts
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            let isSidebarOpen = true;
+
+            sidebarToggle.addEventListener('click', function() {
+                isSidebarOpen = !isSidebarOpen;
+
+                if (isSidebarOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('-translate-x-0');
+                    mainContent.classList.remove('ml-0');
+                    mainContent.classList.add('ml-64');
+                } else {
+                    sidebar.classList.remove('-translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                    mainContent.classList.remove('ml-64');
+                    mainContent.classList.add('ml-0');
+                }
+            });
+        });
+    </script>
 
 </body>
 

@@ -4,16 +4,16 @@
 
         <!-- HEADER -->
         <div>
-            <p class="text-sm font-medium text-cyan-600">
+            <p class="text-sm font-medium text-[var(--forest-accent)]">
                 Vue générale
             </p>
 
-            <h1 class="mt-1 text-3xl font-black text-slate-900">
-                Bonjour, Admin 👋
+            <h1 class="mt-1 text-3xl font-black text-[var(--forest-text)]">
+                Bonjour, {{ Auth::user()->name ?? 'Admin' }} 👋
             </h1>
 
-            <p class="mt-2 text-sm text-slate-500">
-                Voici un aperçu de l'activité de Texpart.
+            <p class="mt-2 text-sm forest-muted">
+                Voici un aperçu de l'activité de Texparts.
             </p>
         </div>
 
@@ -22,24 +22,24 @@
         <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
 
             <!-- CA -->
-            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <div class="forest-card rounded-2xl border p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <div class="flex items-center justify-between">
 
                     <div>
-                        <p class="text-sm font-medium text-slate-500">
+                        <p class="text-sm font-medium text-[var(--forest-muted)]">
                             Chiffre d'affaires
                         </p>
 
-                        <p class="mt-2 text-2xl font-black text-slate-900">
-                            0 DH
+                        <p class="mt-2 text-2xl font-black text-[var(--forest-text)]">
+                            {{ number_format($totalRevenue, 2, ',', ' ') }} DH
                         </p>
 
-                        <p class="mt-2 text-xs text-emerald-600">
-                            ↑ 0% ce mois
+                        <p class="mt-2 text-xs text-[var(--forest-accent)]">
+                            Total des factures enregistrées
                         </p>
                     </div>
 
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--forest-accent-soft)] text-[var(--forest-accent)]">
                         💰
                     </div>
 
@@ -48,24 +48,24 @@
 
 
             <!-- VENTES -->
-            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <div class="forest-card rounded-2xl border p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <div class="flex items-center justify-between">
 
                     <div>
-                        <p class="text-sm font-medium text-slate-500">
+                        <p class="text-sm font-medium text-[var(--forest-muted)]">
                             Ventes
                         </p>
 
-                        <p class="mt-2 text-2xl font-black text-slate-900">
-                            0
+                        <p class="mt-2 text-2xl font-black text-[var(--forest-text)]">
+                            {{ $invoicesCount }}
                         </p>
 
-                        <p class="mt-2 text-xs text-slate-400">
+                        <p class="mt-2 text-xs text-[var(--forest-muted)]">
                             Ce mois
                         </p>
                     </div>
 
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--forest-accent-soft)] text-[var(--forest-accent)]">
                         📈
                     </div>
 
@@ -74,24 +74,24 @@
 
 
             <!-- CLIENTS -->
-            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <div class="forest-card rounded-2xl border p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <div class="flex items-center justify-between">
 
                     <div>
-                        <p class="text-sm font-medium text-slate-500">
+                        <p class="text-sm font-medium text-[var(--forest-muted)]">
                             Clients
                         </p>
 
-                        <p class="mt-2 text-2xl font-black text-slate-900">
-                            0
+                        <p class="mt-2 text-2xl font-black text-[var(--forest-text)]">
+                            {{ $clientsCount }}
                         </p>
 
-                        <p class="mt-2 text-xs text-slate-400">
+                        <p class="mt-2 text-xs text-[var(--forest-muted)]">
                             Clients enregistrés
                         </p>
                     </div>
 
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--forest-accent-soft)] text-[var(--forest-accent)]">
                         👥
                     </div>
 
@@ -100,24 +100,24 @@
 
 
             <!-- ALERTES -->
-            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <div class="forest-card rounded-2xl border p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <div class="flex items-center justify-between">
 
                     <div>
-                        <p class="text-sm font-medium text-slate-500">
+                        <p class="text-sm font-medium text-[var(--forest-muted)]">
                             Alertes stock
                         </p>
 
-                        <p class="mt-2 text-2xl font-black text-slate-900">
-                            0
+                        <p class="mt-2 text-2xl font-black text-[var(--forest-text)]">
+                            {{ $stockAlerts }}
                         </p>
 
-                        <p class="mt-2 text-xs text-orange-500">
+                        <p class="mt-2 text-xs text-[var(--forest-accent)]">
                             Stock faible ou rupture
                         </p>
                     </div>
 
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--forest-accent-soft)] text-[var(--forest-accent)]">
                         🔔
                     </div>
 
@@ -131,21 +131,22 @@
         <div class="grid gap-6 xl:grid-cols-3">
 
             <!-- GRAPHIQUE -->
-            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm xl:col-span-2">
+            <div class="forest-card rounded-2xl border p-6 shadow-sm xl:col-span-2">
 
                 <div class="flex items-center justify-between">
 
                     <div>
-                        <h2 class="text-lg font-bold text-slate-900">
+
+                        <h2 class="text-lg font-bold text-[var(--forest-text)]">
                             Évolution des ventes
                         </h2>
 
-                        <p class="mt-1 text-xs text-slate-400">
+                        <p class="mt-1 text-xs text-[var(--forest-muted)]">
                             Évolution du chiffre d'affaires
                         </p>
                     </div>
 
-                    <select class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
+                    <select class="rounded-lg border border-[var(--forest-border)] bg-[var(--forest-panel)] px-3 py-2 text-xs text-[var(--forest-text)]">
                         <option>7 derniers jours</option>
                         <option>30 derniers jours</option>
                         <option>Cette année</option>
@@ -154,19 +155,19 @@
                 </div>
 
 
-                <div class="mt-6 flex h-64 items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50">
+                <div class="mt-6 flex h-64 items-center justify-center rounded-xl border border-dashed border-[var(--forest-border)] bg-[var(--forest-panel)]">
 
                     <div class="text-center">
 
-                        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-white text-cyan-500 shadow-sm">
+                        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[var(--forest-surface)] text-[var(--forest-accent)] shadow-sm">
                             📊
                         </div>
 
-                        <p class="mt-3 text-sm font-semibold text-slate-600">
+                        <p class="mt-3 text-sm font-semibold text-[var(--forest-text)]">
                             Aucune donnée de vente
                         </p>
 
-                        <p class="mt-1 text-xs text-slate-400">
+                        <p class="mt-1 text-xs text-[var(--forest-muted)]">
                             Le graphique sera alimenté avec les données réelles.
                         </p>
 
@@ -178,13 +179,13 @@
 
 
             <!-- ACTIONS RAPIDES -->
-            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="forest-card rounded-2xl border p-6 shadow-sm">
 
-                <h2 class="text-lg font-bold text-slate-900">
+                <h2 class="text-lg font-bold text-[var(--forest-text)]">
                     Actions rapides
                 </h2>
 
-                <p class="mt-1 text-xs text-slate-400">
+                <p class="mt-1 text-xs text-[var(--forest-muted)]">
                     Accès rapide aux fonctionnalités
                 </p>
 
@@ -192,18 +193,18 @@
                 <div class="mt-5 space-y-3">
 
                     <a href="/clients-fournisseurs"
-                       class="flex items-center gap-3 rounded-xl border border-slate-200 p-3 transition hover:border-cyan-300 hover:bg-cyan-50">
+                       class="flex items-center gap-3 rounded-xl border border-[var(--forest-border)] bg-[var(--forest-surface)] p-3 transition hover:border-[var(--forest-accent)] hover:bg-[var(--forest-accent-soft)]">
 
-                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-50">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--forest-accent-soft)] text-[var(--forest-accent)]">
                             👥
                         </div>
 
                         <div>
-                            <p class="text-sm font-semibold text-slate-800">
+                            <p class="text-sm font-semibold text-[var(--forest-text)]">
                                 Gérer les clients
                             </p>
 
-                            <p class="text-[11px] text-slate-400">
+                            <p class="text-[11px] text-[var(--forest-muted)]">
                                 Clients & fournisseurs
                             </p>
                         </div>
@@ -212,18 +213,18 @@
 
 
                     <a href="/stock"
-                       class="flex items-center gap-3 rounded-xl border border-slate-200 p-3 transition hover:border-blue-300 hover:bg-blue-50">
+                       class="flex items-center gap-3 rounded-xl border border-[var(--forest-border)] bg-[var(--forest-surface)] p-3 transition hover:border-[var(--forest-accent)] hover:bg-[var(--forest-accent-soft)]">
 
-                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--forest-accent-soft)] text-[var(--forest-accent)]">
                             📦
                         </div>
 
                         <div>
-                            <p class="text-sm font-semibold text-slate-800">
+                            <p class="text-sm font-semibold text-[var(--forest-text)]">
                                 Consulter le stock
                             </p>
 
-                            <p class="text-[11px] text-slate-400">
+                            <p class="text-[11px] text-[var(--forest-muted)]">
                                 Produits disponibles
                             </p>
                         </div>
@@ -232,21 +233,20 @@
 
 
                     <a href="/factures"
-                       class="flex items-center gap-3 rounded-xl border border-slate-200 p-3 transition hover:border-violet-300 hover:bg-violet-50">
+                       class="flex items-center gap-3 rounded-xl border border-[var(--forest-border)] bg-[var(--forest-surface)] p-3 transition hover:border-[var(--forest-accent)] hover:bg-[var(--forest-accent-soft)]">
 
-                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-50">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--forest-accent-soft)] text-[var(--forest-accent)]">
                             🧾
                         </div>
 
                         <div>
-                            <p class="text-sm font-semibold text-slate-800">
+                            <p class="text-sm font-semibold text-[var(--forest-text)]">
                                 Créer une facture
                             </p>
 
-                            <p class="text-[11px] text-slate-400">
+                            <p class="text-[11px] text-[var(--forest-muted)]">
                                 Nouvelle facture
                             </p>
-                        </div>
 
                     </a>
 
@@ -258,22 +258,23 @@
 
 
         <!-- DERNIÈRES FACTURES -->
-        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="overflow-hidden rounded-2xl border border-[var(--forest-border)] bg-[var(--forest-surface)] shadow-sm">
 
             <div class="flex items-center justify-between p-6">
 
                 <div>
-                    <h2 class="text-lg font-bold text-slate-900">
+
+                    <h2 class="text-lg font-bold text-[var(--forest-text)]">
                         Dernières factures
                     </h2>
 
-                    <p class="mt-1 text-xs text-slate-400">
+                    <p class="mt-1 text-xs text-[var(--forest-muted)]">
                         Les dernières factures enregistrées
                     </p>
                 </div>
 
                 <a href="/factures"
-                   class="text-xs font-semibold text-cyan-600 hover:text-cyan-700">
+                   class="text-xs font-semibold text-[var(--forest-accent)] hover:text-[var(--forest-text)]">
                     Voir tout →
                 </a>
 
@@ -284,27 +285,27 @@
 
                 <table class="w-full text-left text-sm">
 
-                    <thead class="border-y border-slate-200 bg-slate-50">
+                    <thead class="border-y border-[var(--forest-border)] bg-[var(--forest-panel)]">
 
                         <tr>
 
-                            <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                            <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                 N° Facture
                             </th>
 
-                            <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                            <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                 Client
                             </th>
 
-                            <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                            <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                 Date
                             </th>
 
-                            <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                            <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                 Montant
                             </th>
 
-                            <th class="px-6 py-4 text-xs font-semibold text-slate-500">
+                            <th class="px-6 py-4 text-xs font-semibold text-[var(--forest-muted)]">
                                 Statut
                             </th>
 
@@ -313,23 +314,36 @@
                     </thead>
 
                     <tbody>
-
-                        <tr>
-
-                            <td colspan="5" class="px-6 py-10 text-center">
-
-                                <p class="text-sm font-medium text-slate-500">
-                                    Aucune facture pour le moment
-                                </p>
-
-                                <p class="mt-1 text-xs text-slate-400">
-                                    Les nouvelles factures apparaîtront ici.
-                                </p>
-
-                            </td>
-
-                        </tr>
-
+                        @forelse($latestInvoices as $invoice)
+                            <tr class="border-b border-[var(--forest-border)]">
+                                <td class="px-6 py-4 font-medium text-[var(--forest-text)]">
+                                    {{ $invoice->invoice_number }}
+                                </td>
+                                <td class="px-6 py-4 text-[var(--forest-muted)]">
+                                    {{ $invoice->client_name ?? 'Sans client' }}
+                                </td>
+                                <td class="px-6 py-4 text-[var(--forest-muted)]">
+                                    {{ $invoice->invoice_date ? date('d/m/Y', strtotime($invoice->invoice_date)) : '-' }}
+                                </td>
+                                <td class="px-6 py-4 text-[var(--forest-muted)]">
+                                    {{ number_format($invoice->amount, 2, ',', ' ') }} DH
+                                </td>
+                                <td class="px-6 py-4 text-[var(--forest-muted)]">
+                                    {{ ucfirst($invoice->status) }}
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-10 text-center">
+                                    <p class="text-sm font-medium text-[var(--forest-muted)]">
+                                        Aucune facture pour le moment
+                                    </p>
+                                    <p class="mt-1 text-xs text-[var(--forest-muted)]">
+                                        Les nouvelles factures apparaîtront ici.
+                                    </p>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
 
                 </table>

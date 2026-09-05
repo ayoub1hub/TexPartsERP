@@ -14,7 +14,37 @@ Route::get('/', function () {
 
 /* Dashboar */
 
-Route::view('/dashboard', 'components.⚡dashboard')
+Route::get('/dashboard', function () {
+
+    $totalRevenue = DB::table('invoices')->sum('amount') ?? 0;
+    $invoicesCount = DB::table('invoices')->count() ?? 0;
+    $clientsCount = DB::table('clients')->count() ?? 0;
+
+    $stockAlerts = Product::all()->map(function ($product) {
+        $entries = StockEntry::where('product_id', $product->id)->sum('quantity');
+        $exits = StockExit::where('product_id', $product->id)->sum('quantity');
+        $product->current_stock = $entries - $exits;
+        return $product;
+    })->filter(function ($product) {
+        return $product->current_stock <= $product->minimum_stock;
+    })->count();
+
+    $latestInvoices = DB::table('invoices')
+        ->leftJoin('clients', 'invoices.client_id', '=', 'clients.id')
+        ->select('invoices.*', 'clients.name as client_name')
+        ->orderByDesc('invoices.invoice_date')
+        ->limit(5)
+        ->get();
+
+    return view('components.⚡dashboard', [
+        'totalRevenue' => $totalRevenue,
+        'invoicesCount' => $invoicesCount,
+        'clientsCount' => $clientsCount,
+        'stockAlerts' => $stockAlerts,
+        'latestInvoices' => $latestInvoices,
+    ]);
+
+})
     ->middleware('auth')
     ->name('dashboard');
 
@@ -227,13 +257,13 @@ Route::get('/stock', function () {
 
 Route::post('/stock/entry', function () {
 
-    request()->validate([
+    $data = request()->validate([
 
         'product_id' => ['required', 'integer', 'exists:products,id'],
 
         'supplier_id' => ['required', 'integer', 'exists:suppliers,id'],
 
-        'quantity' => ['required', 'numeric', 'min:1'],
+        'quantity' => ['required', 'integer', 'min:1'],
 
         'purchase_price' => ['required', 'numeric', 'min:0'],
 
@@ -246,17 +276,17 @@ Route::post('/stock/entry', function () {
 
     DB::table('stock_entries')->insert([
 
-        'product_id' => request('product_id'),
+        'product_id' => $data['product_id'],
 
-        'supplier_id' => request('supplier_id'),
+        'supplier_id' => $data['supplier_id'],
 
-        'quantity' => request('quantity'),
+        'quantity' => $data['quantity'],
 
-        'purchase_price' => request('purchase_price'),
+        'purchase_price' => $data['purchase_price'],
 
-        'reference' => request('reference'),
+        'reference' => $data['reference'] ?? null,
 
-        'entry_date' => request('entry_date'),
+        'entry_date' => $data['entry_date'],
 
         'created_by' => auth()->id(),
 
@@ -274,6 +304,71 @@ Route::post('/stock/entry', function () {
 })
     ->middleware('auth')
     ->name('stock.entry');
+
+
+/* ENREGISTRER UNE SORTIE DE STOCK */
+
+Route::post('/stock/exit', function () {
+
+    $data = request()->validate([
+
+        'product_id' => ['required', 'integer', 'exists:products,id'],
+
+        'quantity' => ['required', 'integer', 'min:1'],
+
+        'reason' => ['nullable', 'string', 'max:255'],
+
+        'reference' => ['nullable', 'string', 'max:255'],
+
+        'exit_date' => ['required', 'date'],
+
+    ]);
+
+    $totalEntries = DB::table('stock_entries')
+        ->where('product_id', $data['product_id'])
+        ->sum('quantity');
+
+    $totalExits = DB::table('stock_exits')
+        ->where('product_id', $data['product_id'])
+        ->sum('quantity');
+
+    $currentStock = $totalEntries - $totalExits;
+
+    if ($data['quantity'] > $currentStock) {
+        return back()
+            ->withInput()
+            ->withErrors([
+                'quantity' => "Stock insuffisant. Quantité disponible : {$currentStock}.",
+            ]);
+    }
+
+    DB::table('stock_exits')->insert([
+
+        'product_id' => $data['product_id'],
+
+        'quantity' => $data['quantity'],
+
+        'reason' => $data['reason'] ?? null,
+
+        'reference' => $data['reference'] ?? null,
+
+        'exit_date' => $data['exit_date'],
+
+        'created_by' => auth()->id(),
+
+        'created_at' => now(),
+
+        'updated_at' => now(),
+
+    ]);
+
+    return redirect()
+        ->route('stock')
+        ->with('success', 'Sortie de stock enregistrée avec succès.');
+
+})
+    ->middleware('auth')
+    ->name('stock.exit');
 
 
 /*  FACTURES  */ 
