@@ -11,11 +11,9 @@ class Product extends Model
     protected $fillable = [
         'reference',
         'name',
-        'description',
         'purchase_price',
         'selling_price',
         'minimum_stock',
-        'active',
     ];
 
     public $timestamps = false;

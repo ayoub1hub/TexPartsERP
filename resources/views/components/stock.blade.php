@@ -200,13 +200,6 @@
                                         {{ $product->name }}
                                     </p>
 
-                                    @if ($product->description)
-
-                                        <p class="mt-1 max-w-xs truncate text-xs text-slate-400">
-                                            {{ $product->description }}
-                                        </p>
-
-                                    @endif
 
                                 </td>
 

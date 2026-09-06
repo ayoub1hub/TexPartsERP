@@ -10,16 +10,14 @@ class Invoice extends Model
 {
     protected $table = 'invoices';
 
-    protected $fillable = [
-        'invoice_number',
-        'client_id',
-        'invoice_date',
-        'amount',
-        'status',
-        'pdf_path',
-        'created_by',
-    ];
-
+   protected $fillable = [
+    'invoice_number',
+    'client_id',
+    'invoice_date',
+    'amount',
+    'status',
+    'pdf_path',
+];
     protected $casts = [
         'invoice_date' => 'date',
         'amount' => 'decimal:2',

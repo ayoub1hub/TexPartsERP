@@ -8,15 +8,13 @@ class StockExit extends Model
 {
     protected $table = 'stock_exits';
 
-    protected $fillable = [
-        'product_id',
-        'quantity',
-        'reason',
-        'reference',
-        'exit_date',
-        'created_by',
-    ];
-
+   protected $fillable = [
+    'product_id',
+    'quantity',
+    'reason',
+    'reference',
+    'exit_date',
+];
     public $timestamps = false;
 
     public function product()

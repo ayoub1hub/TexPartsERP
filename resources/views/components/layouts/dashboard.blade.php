@@ -1,3 +1,19 @@
+@php
+    use App\Models\Product;
+    use App\Models\StockEntry;
+    use App\Models\StockExit;
+
+    $alertCount = Product::all()
+        ->filter(function ($product) {
+            $entries = StockEntry::where('product_id', $product->id)->sum('quantity');
+            $exits = StockExit::where('product_id', $product->id)->sum('quantity');
+
+            $stock = $entries - $exits;
+
+            return $stock <= $product->minimum_stock;
+        })
+        ->count();
+@endphp
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -102,7 +118,7 @@
                     </div>
 
                     <span class="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
-                        0
+                        {{ $alertCount }}
                     </span>
 
                 </a>
