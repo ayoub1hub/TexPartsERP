@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\InvoiceController;
 use App\Models\Product;
 use App\Models\StockEntry;
@@ -20,14 +21,7 @@ Route::get('/dashboard', function () {
     $invoicesCount = DB::table('invoices')->count() ?? 0;
     $clientsCount = DB::table('clients')->count() ?? 0;
 
-    $stockAlerts = Product::all()->map(function ($product) {
-        $entries = StockEntry::where('product_id', $product->id)->sum('quantity');
-        $exits = StockExit::where('product_id', $product->id)->sum('quantity');
-        $product->current_stock = $entries - $exits;
-        return $product;
-    })->filter(function ($product) {
-        return $product->current_stock <= $product->minimum_stock;
-    })->count();
+    $stockAlerts = Product::whereColumn('quantity', '<=', 'minimum_stock')->count();
 
     $latestInvoices = DB::table('invoices')
         ->leftJoin('clients', 'invoices.client_id', '=', 'clients.id')
@@ -209,12 +203,7 @@ Route::get('/stock', function () {
             'products.*',
             DB::raw('COALESCE(entries.total_entries, 0) as total_entries'),
             DB::raw('COALESCE(exits.total_exits, 0) as total_exits'),
-            DB::raw('
-                COALESCE(entries.total_entries, 0)
-                -
-                COALESCE(exits.total_exits, 0)
-                as current_stock
-            ')
+            'products.quantity as current_stock'
         )
         ->orderBy('products.name')
         ->get();
@@ -274,28 +263,57 @@ Route::post('/stock/entry', function () {
     ]);
 
 
-    DB::table('stock_entries')->insert([
+    DB::transaction(function () use ($data): void {
+        $entryId = DB::table('stock_entries')->insertGetId([
 
-        'product_id' => $data['product_id'],
+            'product_id' => $data['product_id'],
 
-        'supplier_id' => $data['supplier_id'],
+            'supplier_id' => $data['supplier_id'],
 
-        'quantity' => $data['quantity'],
+            'quantity' => $data['quantity'],
 
-        'purchase_price' => $data['purchase_price'],
+            'purchase_price' => $data['purchase_price'],
 
-        'reference' => $data['reference'] ?? null,
+            'reference' => $data['reference'] ?? null,
 
-        'entry_date' => $data['entry_date'],
+            'entry_date' => $data['entry_date'],
 
-        'created_by' => auth()->id(),
+            'created_by' => auth()->id(),
 
-        'created_at' => now(),
+            'created_at' => now(),
 
-        'updated_at' => now(),
+            'updated_at' => now(),
 
-    ]);
+        ]);
 
+        DB::table('products')
+            ->where('id', $data['product_id'])
+            ->increment('quantity', $data['quantity']);
+
+        $entry = DB::table('stock_entries')->where('id', $entryId)->first();
+        $product = DB::table('products')->where('id', $data['product_id'])->first();
+        $supplier = DB::table('suppliers')->where('id', $data['supplier_id'])->first();
+        $user = DB::table('users')->where('id', auth()->id())->first();
+
+        $documentPdf = Pdf::loadView('pdf.purchase-receipt', [
+            'documentNumber' => 'BA-' . date('Y') . '-' . str_pad((string) $entryId, 6, '0', STR_PAD_LEFT),
+            'entry' => $entry,
+            'product' => $product,
+            'supplier' => $supplier,
+            'user' => $user,
+        ])->output();
+
+        if (DB::connection()->getDriverName() === 'pgsql') {
+            DB::update(
+                "UPDATE stock_entries SET document_pdf = decode(?, 'hex') WHERE id = ?",
+                [bin2hex($documentPdf), $entryId]
+            );
+        } else {
+            DB::table('stock_entries')
+                ->where('id', $entryId)
+                ->update(['document_pdf' => $documentPdf]);
+        }
+    });
 
     return redirect()
         ->route('stock')
@@ -324,43 +342,76 @@ Route::post('/stock/exit', function () {
 
     ]);
 
-    $totalEntries = DB::table('stock_entries')
-        ->where('product_id', $data['product_id'])
-        ->sum('quantity');
+    $insufficientStock = false;
+    $currentStock = 0;
 
-    $totalExits = DB::table('stock_exits')
-        ->where('product_id', $data['product_id'])
-        ->sum('quantity');
+    DB::transaction(function () use ($data, &$insufficientStock, &$currentStock): void {
+        $product = DB::table('products')
+            ->where('id', $data['product_id'])
+            ->lockForUpdate()
+            ->first();
 
-    $currentStock = $totalEntries - $totalExits;
+        $currentStock = $product->quantity;
 
-    if ($data['quantity'] > $currentStock) {
+        if ($data['quantity'] > $currentStock) {
+            $insufficientStock = true;
+            return;
+        }
+
+        $exitId = DB::table('stock_exits')->insertGetId([
+
+            'product_id' => $data['product_id'],
+
+            'quantity' => $data['quantity'],
+
+            'reason' => $data['reason'] ?? null,
+
+            'reference' => $data['reference'] ?? null,
+
+            'exit_date' => $data['exit_date'],
+
+            'created_by' => auth()->id(),
+
+            'created_at' => now(),
+
+            'updated_at' => now(),
+
+        ]);
+
+        DB::table('products')
+            ->where('id', $data['product_id'])
+            ->decrement('quantity', $data['quantity']);
+
+        $exit = DB::table('stock_exits')->where('id', $exitId)->first();
+        $product = DB::table('products')->where('id', $data['product_id'])->first();
+        $user = DB::table('users')->where('id', auth()->id())->first();
+
+        $documentPdf = Pdf::loadView('pdf.delivery-note', [
+            'documentNumber' => 'BL-' . date('Y') . '-' . str_pad((string) $exitId, 6, '0', STR_PAD_LEFT),
+            'exit' => $exit,
+            'product' => $product,
+            'user' => $user,
+        ])->output();
+
+        if (DB::connection()->getDriverName() === 'pgsql') {
+            DB::update(
+                "UPDATE stock_exits SET document_pdf = decode(?, 'hex') WHERE id = ?",
+                [bin2hex($documentPdf), $exitId]
+            );
+        } else {
+            DB::table('stock_exits')
+                ->where('id', $exitId)
+                ->update(['document_pdf' => $documentPdf]);
+        }
+    });
+
+    if ($insufficientStock) {
         return back()
             ->withInput()
             ->withErrors([
                 'quantity' => "Stock insuffisant. Quantité disponible : {$currentStock}.",
             ]);
     }
-
-    DB::table('stock_exits')->insert([
-
-        'product_id' => $data['product_id'],
-
-        'quantity' => $data['quantity'],
-
-        'reason' => $data['reason'] ?? null,
-
-        'reference' => $data['reference'] ?? null,
-
-        'exit_date' => $data['exit_date'],
-
-        'created_by' => auth()->id(),
-
-        'created_at' => now(),
-
-        'updated_at' => now(),
-
-    ]);
 
     return redirect()
         ->route('stock')
@@ -369,6 +420,41 @@ Route::post('/stock/exit', function () {
 })
     ->middleware('auth')
     ->name('stock.exit');
+
+
+/* TÉLÉCHARGER LES DOCUMENTS DE STOCK */
+
+Route::get('/stock/entry/{entry}/document', function (int $entry) {
+    $document = DB::table('stock_entries')
+        ->where('id', $entry)
+        ->first(['id', 'document_pdf']);
+
+    abort_unless($document && $document->document_pdf, 404);
+
+    $pdfContent = is_resource($document->document_pdf)
+        ? stream_get_contents($document->document_pdf)
+        : $document->document_pdf;
+
+    return response($pdfContent)
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'attachment; filename="bon-achat-' . $document->id . '.pdf"');
+})->middleware('auth')->name('stock.entry.document');
+
+Route::get('/stock/exit/{exit}/document', function (int $exit) {
+    $document = DB::table('stock_exits')
+        ->where('id', $exit)
+        ->first(['id', 'document_pdf']);
+
+    abort_unless($document && $document->document_pdf, 404);
+
+    $pdfContent = is_resource($document->document_pdf)
+        ? stream_get_contents($document->document_pdf)
+        : $document->document_pdf;
+
+    return response($pdfContent)
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'attachment; filename="bon-livraison-' . $document->id . '.pdf"');
+})->middleware('auth')->name('stock.exit.document');
 
 
 /*  FACTURES  */ 
@@ -380,23 +466,11 @@ Route::middleware('auth')->group(function () {
 /* ALERTES */
 Route::get('/alertes', function () {
 
-    $products = Product::all()->map(function ($product) {
-
-        $entries = StockEntry::where('product_id', $product->id)
-            ->sum('quantity');
-
-        $exits = StockExit::where('product_id', $product->id)
-            ->sum('quantity');
-
-        $product->current_stock = $entries - $exits;
-
-        return $product;
-
-    })->filter(function ($product) {
-
-        return $product->current_stock <= $product->minimum_stock;
-
-    });
+    $products = Product::whereColumn('quantity', '<=', 'minimum_stock')
+        ->get()
+        ->each(function ($product): void {
+            $product->current_stock = $product->quantity;
+        });
 
     return view('alertes', compact('products'));
 

@@ -15,6 +15,7 @@ class StockExit extends Model
         'reference',
         'exit_date',
         'created_by',
+        'document_pdf',
     ];
 
     public $timestamps = false;

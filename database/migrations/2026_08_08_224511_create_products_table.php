@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('reference')->unique();
             $table->string('name');
+            $table->integer('quantity')->default(0);
             $table->text('description')->nullable();
             $table->decimal('purchase_price', 10, 2)->default(0);
             $table->decimal('selling_price', 10, 2)->default(0);

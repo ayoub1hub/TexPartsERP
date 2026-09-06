@@ -16,6 +16,7 @@ class StockEntry extends Model
         'reference',
         'entry_date',
         'created_by',
+        'document_pdf',
     ];
 
     public $timestamps = false;

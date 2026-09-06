@@ -40,6 +40,14 @@ class StockTest extends TestCase
             'product_id' => $productId,
             'quantity' => 10,
         ]);
+        $entryDocument = DB::table('stock_entries')
+            ->where('product_id', $productId)
+            ->first();
+        $this->assertStringStartsWith('%PDF', $entryDocument->document_pdf);
+        $this->assertDatabaseHas('products', [
+            'id' => $productId,
+            'quantity' => 10,
+        ]);
 
         $this->actingAs($user)->post(route('stock.exit'), [
             'product_id' => $productId,
@@ -52,11 +60,27 @@ class StockTest extends TestCase
             'product_id' => $productId,
             'quantity' => 3,
         ]);
+        $exitDocument = DB::table('stock_exits')
+            ->where('product_id', $productId)
+            ->first();
+        $this->assertStringStartsWith('%PDF', $exitDocument->document_pdf);
+        $this->actingAs($user)
+            ->get(route('stock.entry.document', $entryDocument->id))
+            ->assertOk()
+            ->assertHeader('Content-Type', 'application/pdf');
+        $this->actingAs($user)
+            ->get(route('stock.exit.document', $exitDocument->id))
+            ->assertOk()
+            ->assertHeader('Content-Type', 'application/pdf');
 
         $currentStock = DB::table('stock_entries')->where('product_id', $productId)->sum('quantity')
             - DB::table('stock_exits')->where('product_id', $productId)->sum('quantity');
 
         $this->assertSame(7, $currentStock);
+        $this->assertDatabaseHas('products', [
+            'id' => $productId,
+            'quantity' => 7,
+        ]);
         $this->actingAs($user)->get(route('stock'))
             ->assertOk()
             ->assertSee('7');

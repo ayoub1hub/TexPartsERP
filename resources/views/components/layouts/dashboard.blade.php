@@ -49,9 +49,8 @@
 
                 <a
                     href="{{ route('dashboard') }}"
-                    class="flex items-center gap-3 rounded-xl bg-cyan-600/20 px-4 py-3 text-sm font-semibold text-cyan-400 transition hover:bg-cyan-600/30"
+                    class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition {{ request()->is('dashboard') ? 'bg-cyan-600/20 text-cyan-400' : 'text-slate-300 hover:bg-white/5 hover:text-white' }}"
                 >
-                    <span class="text-lg">🏠</span>
                     <span>Accueil</span>
                 </a>
 
@@ -60,9 +59,8 @@
 
                 <a
                     href="{{ route('clients-fournisseurs') }}"
-                    class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
+                    class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition {{ request()->is('clients-fournisseurs*') ? 'bg-cyan-600/20 text-cyan-400' : 'text-slate-300 hover:bg-white/5 hover:text-white' }}"
                 >
-                    <span class="text-lg">👥</span>
                     <span>Clients & Fournisseurs</span>
                 </a>
 
@@ -71,9 +69,8 @@
 
                 <a
                     href="{{ route('stock') }}"
-                    class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
+                    class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition {{ request()->is('stock*') ? 'bg-cyan-600/20 text-cyan-400' : 'text-slate-300 hover:bg-white/5 hover:text-white' }}"
                 >
-                    <span class="text-lg">📦</span>
                     <span>Stock</span>
                 </a>
 
@@ -82,9 +79,8 @@
 
                 <a
                     href="{{ route('factures') }}"
-                    class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
+                    class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition {{ request()->is('factures*') ? 'bg-cyan-600/20 text-cyan-400' : 'text-slate-300 hover:bg-white/5 hover:text-white' }}"
                 >
-                    <span class="text-lg">🧾</span>
                     <span>Factures</span>
                 </a>
 
@@ -93,18 +89,14 @@
 
                 <a
                     href="{{ route('alertes') }}"
-                    class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
+                    class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition {{ request()->is('alertes*') ? 'bg-cyan-600/20 text-cyan-400' : 'text-slate-300 hover:bg-white/5 hover:text-white' }}"
                 >
-
                     <div class="flex items-center gap-3">
-                        <span class="text-lg">🔔</span>
                         <span>Alertes</span>
                     </div>
-
                     <span class="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
                         {{ $stockAlerts ?? 0 }}
                     </span>
-
                 </a>
                 
                 <form method="POST" action="{{ route('logout') }}">
